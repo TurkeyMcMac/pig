@@ -2,10 +2,10 @@
 
 #include <stdio.h>
 
-PIG_TRAIT_SINGLE_FULL(print, print, int, (               self,       file),
-                                          pig_object_ty *self, FILE *file);
+PIG_TRAIT_SINGLE_FULL(print, print, int, (        self,       file),
+                                          pig_ty *self, FILE *file);
 
-int print_foo(pig_object_ty *self, FILE *file)
+int print_foo(pig_ty *self, FILE *file)
 {
 	return fprintf(file, "foo\n");
 }

@@ -35,9 +35,9 @@
 
 typedef struct {
 	void *(*get_info)(int trait_id);
-} pig_object_ty;
+} pig_ty;
 
-static inline void pig_object_init(pig_object_ty *self, void *(*get_info)(int trait_id))
+static inline void pig_init(pig_ty *self, void *(*get_info)(int trait_id))
 {
 	self->get_info = get_info;
 }
