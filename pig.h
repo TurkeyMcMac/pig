@@ -10,7 +10,7 @@
  *  trait: The name of the trait
  * */
 #define PIG_TRAIT(trait) \
-	const int const trait##_id = __COUNTER__; \
+	const int const trait##_trait_id = __COUNTER__; \
 	struct _##trait; \
 	typedef struct _##trait trait##_info_ty; \
 	struct _##trait
@@ -54,7 +54,7 @@
  *  params: The comma-separated parameter list
  * */
 #define PIG_TRAIT_SINGLE_FULL(trait, method_name, ret, args, params...) \
-	const int const trait##_id = __COUNTER__; \
+	const int const trait##_trait_id = __COUNTER__; \
 	typedef int trait##_info_ty; \
 	typedef ret (*trait##_method_ty)(params);\
 	static inline ret method_name(const trait##_info_ty *_info_internal, params) \
@@ -102,7 +102,7 @@ static inline void pig_init(pig_ty *self, void *(*get_info)(int trait_id))
  *  return value: A pointer to an implementation of the requested trait, where NULL indicates that
  *  an implementation of the trait requested could not be found
  * */
-#define pig_info(pig, trait) ( (trait##_info_ty *)(*(pig)->get_info)(trait##_id) )
+#define pig_info(pig, trait) ( (trait##_info_ty *)(*(pig)->get_info)(trait##_trait_id) )
 
 /* This is due to some strange casting which must be done. */
 struct _pig_void_ptr_must_be_equal_in_size_to_function_ptr {
