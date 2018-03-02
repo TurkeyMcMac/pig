@@ -4,15 +4,18 @@
 
 #define _PIG_H
 
+#define _PIG_TRAIT_DECLARE(trait, real_type) \
+	const int const trait##_trait_id = __COUNTER__; \
+	typedef real_type trait##_info_ty; \
+
 /* Define a trait. This macro is followed by the information table (the body of a struct
  * definition.)
  * 
  *  trait: The name of the trait
  * */
 #define PIG_TRAIT(trait) \
-	const int const trait##_trait_id = __COUNTER__; \
 	struct _##trait; \
-	typedef struct _##trait trait##_info_ty; \
+	_PIG_TRAIT_DECLARE(trait, struct _##trait); \
 	struct _##trait
 
 /* Define a public method.
@@ -54,8 +57,7 @@
  *  params: The comma-separated parameter list
  * */
 #define PIG_TRAIT_SINGLE_FULL(trait, method_name, ret, args, params...) \
-	const int const trait##_trait_id = __COUNTER__; \
-	typedef int trait##_info_ty; \
+	_PIG_TRAIT_DECLARE(trait, int); \
 	typedef ret (*trait##_method_ty)(params);\
 	static inline ret method_name(const trait##_info_ty *_info_internal, params) \
 	{ \
@@ -81,7 +83,7 @@
  * system, and a pointer to a pig should be passed as the `self` argument to methods.
  * */
 typedef struct {
-	void *(*get_info)(int trait_id);
+	const void *(*get_info)(int trait_id);
 } pig_ty;
 
 /* Initialize a pig.
@@ -89,7 +91,7 @@ typedef struct {
  *  self: The pig to initialize
  *  get_info: The method that the pig should use to get its information
  * */
-static inline void pig_init(pig_ty *self, void *(*get_info)(int trait_id))
+static inline void pig_init(pig_ty *self, const void *(*get_info)(int trait_id))
 {
 	self->get_info = get_info;
 }
@@ -102,7 +104,7 @@ static inline void pig_init(pig_ty *self, void *(*get_info)(int trait_id))
  *  return value: A pointer to an implementation of the requested trait, where NULL indicates that
  *  an implementation of the trait requested could not be found
  * */
-#define pig_info(pig, trait) ( (trait##_info_ty *)(*(pig)->get_info)(trait##_trait_id) )
+#define pig_info(pig, trait) ( (const trait##_info_ty *)(*(pig)->get_info)(trait##_trait_id) )
 
 /* This is due to some strange casting which must be done. */
 struct _pig_void_ptr_must_be_equal_in_size_to_function_ptr {
