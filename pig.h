@@ -5,7 +5,7 @@
 #define _PIG_H
 
 #define _PIG_TRAIT_DECLARE(trait, real_type) \
-	const int const trait##_trait_id = __COUNTER__; \
+	const int trait##_trait_id = __COUNTER__; \
 	typedef real_type trait##_info_ty; \
 
 /* Define a trait. This macro is followed by the information table (the body of a struct
@@ -45,7 +45,7 @@
  *  methods: The list of field initializers not surrounded by braces
  * */
 #define PIG_IMPLEMENT(trait, impl, methods...) \
-	const trait##_info_ty const _##impl##_raw_dont_use = { methods }; \
+	const trait##_info_ty _##impl##_raw_dont_use = { methods }; \
 	const trait##_info_ty *const impl = &_##impl##_raw_dont_use;
 
 /* Define a trait with a single method.
@@ -76,7 +76,7 @@
  *  method: The method implementation
  * */
 #define PIG_IMPLEMENT_SINGLE(trait, impl, method) \
-	const trait##_method_ty const _##impl##_raw_dont_use = method; \
+	const trait##_method_ty _##impl##_raw_dont_use = method; \
 	const trait##_info_ty *const impl = (trait##_info_ty *)method; 
 
 /* An opaque Polymorphism Information Getter. A pig should be embedded in all structures using this
