@@ -4,24 +4,30 @@
 	typedef struct _##trait trait##_info_ty; \
 	struct _##trait
 
-#define PIG_METHOD(trait, name, ret, arg_names, args_declare...) \
-	static inline ret trait##_##name(trait##_info_ty *_info_internal, args_declare) \
+#define PIG_METHOD_FULL(trait, name, full_name, ret, arg_names, args_declare...) \
+	static inline ret full_name(const trait##_info_ty *_info_internal, args_declare) \
 	{ \
 		return (*_info_internal->name) arg_names; \
 	}
+
+#define PIG_METHOD(trait, name, ret, arg_names, args_declare...) \
+	PIG_METHOD_FULL(trait, name, trait##_##name, ret, arg_names, args_declare)
 
 #define PIG_IMPLEMENT(trait, impl, methods...) \
 	const trait##_info_ty const _##impl##_raw_dont_use = { methods }; \
 	const trait##_info_ty *const impl = &_##impl##_raw_dont_use;
 
-#define PIG_TRAIT_SINGLE(trait, method_name, ret, arg_names, args_declare...) \
+#define PIG_TRAIT_SINGLE_FULL(trait, method_name, ret, arg_names, args_declare...) \
 	const int const trait##_id = __COUNTER__; \
 	typedef int trait##_info_ty; \
 	typedef ret (*trait##_method_ty)(args_declare);\
-	static inline ret trait##_##method_name(trait##_info_ty *_info_internal, args_declare) \
+	static inline ret method_name(const trait##_info_ty *_info_internal, args_declare) \
 	{ \
 		return (*(ret (*)(args_declare))_info_internal) arg_names; \
 	}
+
+#define PIG_TRAIT_SINGLE(trait, method_name, ret, arg_names, args_declare...) \
+	PIG_TRAIT_SINGLE_FULL(trait, trait##_##method_name, ret, arg_names, args_declare)
 
 #define PIG_IMPLEMENT_SINGLE(trait, impl, method) \
 	const trait##_method_ty const _##impl##_raw_dont_use = method; \
