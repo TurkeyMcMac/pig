@@ -1,5 +1,9 @@
 /* PIG: Polymorphic Information Getter */
 
+#ifndef _PIG_H /* Header guard */
+
+#define _PIG_H
+
 /* Define a trait. This macro is followed by the information table (the body of a struct
  * definition.)
  * 
@@ -105,3 +109,5 @@ struct _pig_void_ptr_must_be_equal_in_size_to_function_ptr {
 	int void_ptr_must_be_equal_in_size_to_function_ptr
 		[(sizeof(void *) == sizeof(void (*)())) - 1];
 };
+
+#endif /* End header guard */
