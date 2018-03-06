@@ -35,7 +35,7 @@ const void *impl_list(int info_id)
 {
 	switch (info_id) {
 	case pig_id(iterator):
-		return pig_func(next_impl);
+		return pig_cast(next_impl);
 	case pig_id(animal):
 		return &info_animal;
 	default:

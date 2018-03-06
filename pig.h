@@ -15,11 +15,11 @@
 	typedef char _pig_##name##_info_id[__COUNTER__ + 1]; \
 	typedef type _pig_##name##_ty
 
-/* Cast a function pointer to a suitable return value for a pig's info getter function.
+/* Cast a pointer-sized value to a suitable return value for a pig's info getter function.
  *
  *  info: The name of the info in question
  * */
-#define pig_func(info) ((const void *)(ptrdiff_t)info)
+#define pig_cast(info) ((const void *)(ptrdiff_t)info)
 
 /* Get the unique identifier of some registered info.
  *
@@ -52,11 +52,5 @@ void pig_init(pig_ty *self, const void *(*get_info)(int trait_id));
  *  instance could be found
  * */
 #define pig_info(pig, info) ( (_pig_##info##_ty)(ptrdiff_t)(*(pig)->get_info)(pig_id(info)) )
-
-/* This is due to some strange casting which must be done. */
-struct _pig_void_ptr_must_be_equal_in_size_to_function_ptr {
-	int void_ptr_must_be_equal_in_size_to_function_ptr
-		[(sizeof(void *) == sizeof(void (*)())) * 2 - 1];
-};
 
 #endif /* End header guard */
