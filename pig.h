@@ -12,7 +12,7 @@
  *  type: The type which will be returned when this info is requested through pig_info
  * */
 #define PIG_REGISTER(name, type) \
-	static const char _pig_##name##_info_id[__COUNTER__ + 1]; \
+	typedef char _pig_##name##_info_id[__COUNTER__ + 1]; \
 	typedef type _pig_##name##_ty
 
 /* Cast a function pointer to a suitable return value for a pig's info getter function.
